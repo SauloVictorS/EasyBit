@@ -25,7 +25,7 @@ enum Passos {
     Um = 300,
     //% block="dois"
     Dois = 600,
-    //% block="três"
+    //% block="tres"
     Tres = 900,
     //% block="quatro"
     Quatro = 1200,
@@ -65,14 +65,14 @@ enum Velocidade {
     Devagar = 30,
     //% block="normal"
     Normal = 50,
-    //% block="rápido"
+    //% block="rapido"
     Rapido = 70,
-    //% block="muito rápido"
+    //% block="muito rapido"
     MuitoRapido = 100
 }
 
 //% color="#FF6B35" icon="\uf1b9" weight=100
-//% groups="['💡 Luzes', '🚗 Movimento', '👀 Sentidos', '😊 Emoções', '🔧 Avançado']"
+//% groups="['Luzes', 'Movimento', 'Sentidos', 'Emocoes', 'Avancado']"
 namespace MeuRobo {
 
     /*******************************
@@ -260,7 +260,7 @@ namespace MeuRobo {
      * @param cor a cor da luz
      */
     //% block="acender luz $cor"
-    //% group="💡 Luzes" weight=100
+    //% group="Luzes" weight=100
     export function acenderLuz(cor: Cor): void {
         definirCorLEDs(cor)
     }
@@ -269,7 +269,7 @@ namespace MeuRobo {
      * Apaga a luz do robô
      */
     //% block="apagar luz"
-    //% group="💡 Luzes" weight=99
+    //% group="Luzes" weight=99
     export function apagarLuz(): void {
         definirCorLEDs(Cor.Apagado)
     }
@@ -279,7 +279,7 @@ namespace MeuRobo {
      * @param cor a cor da luz
      */
     //% block="piscar luz $cor"
-    //% group="💡 Luzes" weight=98
+    //% group="Luzes" weight=98
     export function piscarLuz(cor: Cor): void {
         for (let i = 0; i < 3; i++) {
             definirCorLEDs(cor)
@@ -298,7 +298,7 @@ namespace MeuRobo {
      * @param velocidade quão rápido o robô vai
      */
     //% block="ir para frente $velocidade"
-    //% group="🚗 Movimento" weight=99
+    //% group="Movimento" weight=99
     export function irParaFrente(velocidade: Velocidade): void {
         moverFrenteInterno(velocidade, 0)
     }
@@ -307,8 +307,8 @@ namespace MeuRobo {
      * Faz o robô ir para trás (movimento contínuo)
      * @param velocidade quão rápido o robô vai
      */
-    //% block="ir para trás $velocidade"
-    //% group="🚗 Movimento" weight=98
+    //% block="ir para tras $velocidade"
+    //% group="Movimento" weight=98
     export function irParaTras(velocidade: Velocidade): void {
         moverTrasInterno(velocidade, 0)
     }
@@ -318,7 +318,7 @@ namespace MeuRobo {
      * @param passos quantos passos andar
      */
     //% block="andar para frente $passos passos"
-    //% group="🚗 Movimento" weight=97
+    //% group="Movimento" weight=97
     export function andarFrente(passos: Passos): void {
         moverFrenteInterno(70, passos)
     }
@@ -327,8 +327,8 @@ namespace MeuRobo {
      * Faz o robô andar para trás por alguns passos e depois para
      * @param passos quantos passos andar
      */
-    //% block="andar para trás $passos passos"
-    //% group="🚗 Movimento" weight=96
+    //% block="andar para tras $passos passos"
+    //% group="Movimento" weight=96
     export function andarTras(passos: Passos): void {
         moverTrasInterno(70, passos)
     }
@@ -339,7 +339,7 @@ namespace MeuRobo {
      * @param quanto quanto virar
      */
     //% block="virar para $lado $quanto"
-    //% group="🚗 Movimento" weight=95
+    //% group="Movimento" weight=95
     export function virar(lado: Lado, quanto: Volta): void {
         if (lado == Lado.Esquerda) {
             girarEsquerdaInterno(50, quanto)
@@ -352,7 +352,7 @@ namespace MeuRobo {
      * Para o robô
      */
     //% block="parar"
-    //% group="🚗 Movimento" weight=94
+    //% group="Movimento" weight=94
     export function parar(): void {
         ensureInit()
         pararMotores()
@@ -367,7 +367,7 @@ namespace MeuRobo {
      * @param distancia quão perto precisa estar
      */
     //% block="tem algo $distancia"
-    //% group="👀 Sentidos" weight=90
+    //% group="Sentidos" weight=90
     export function temAlgo(distancia: Distancia): boolean {
         ensureInit()
 
@@ -393,8 +393,8 @@ namespace MeuRobo {
     /**
      * Verifica se o robô está no chão claro (linha branca)
      */
-    //% block="está no chão claro"
-    //% group="👀 Sentidos" weight=89
+    //% block="esta no chao claro"
+    //% group="Sentidos" weight=89
     export function chaoClaro(): boolean {
         let leitura = (pins.digitalReadPin(DigitalPin.P14) << 2) +
             (pins.digitalReadPin(DigitalPin.P15) << 1) +
@@ -405,8 +405,8 @@ namespace MeuRobo {
     /**
      * Verifica se o botão está apertado
      */
-    //% block="botão apertado"
-    //% group="👀 Sentidos" weight=88
+    //% block="botao apertado"
+    //% group="Sentidos" weight=88
     export function botaoApertado(): boolean {
         return pins.digitalReadPin(DigitalPin.P5) == 1
     }
@@ -418,8 +418,8 @@ namespace MeuRobo {
     /**
      * Faz o robô dançar!
      */
-    //% block="dançar"
-    //% group="😊 Emoções" weight=85
+    //% block="dancar"
+    //% group="Emocoes" weight=85
     export function dancar(): void {
         // Sequência divertida de movimentos e luzes
         definirCorLEDs(Cor.Amarelo)
@@ -442,7 +442,7 @@ namespace MeuRobo {
      * Faz o robô ficar feliz!
      */
     //% block="ficar feliz"
-    //% group="😊 Emoções" weight=84
+    //% group="Emocoes" weight=84
     export function ficarFeliz(): void {
         // Pisca várias cores rapidamente
         definirCorLEDs(Cor.Amarelo)
@@ -466,7 +466,7 @@ namespace MeuRobo {
      * Faz o robô ficar com medo!
      */
     //% block="ficar com medo"
-    //% group="😊 Emoções" weight=83
+    //% group="Emocoes" weight=83
     export function ficarComMedo(): void {
         // Recua e pisca vermelho
         definirCorLEDs(Cor.Vermelho)
@@ -492,7 +492,7 @@ namespace MeuRobo {
      */
     //% block="mover para frente velocidade $velocidade \%"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
-    //% group="🔧 Avançado" weight=79
+    //% group="Avancado" weight=79
     export function moverFrenteVelocidade(velocidade: number): void {
         moverFrenteInterno(velocidade, 0)
     }
@@ -501,9 +501,9 @@ namespace MeuRobo {
      * Move o robô para trás com velocidade em porcentagem (0 a 100)
      * @param velocidade velocidade de 0 a 100
      */
-    //% block="mover para trás velocidade $velocidade \%"
+    //% block="mover para tras velocidade $velocidade \%"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
-    //% group="🔧 Avançado" weight=78
+    //% group="Avancado" weight=78
     export function moverTrasVelocidade(velocidade: number): void {
         moverTrasInterno(velocidade, 0)
     }
@@ -514,7 +514,7 @@ namespace MeuRobo {
      */
     //% block="girar para esquerda velocidade $velocidade \%"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
-    //% group="🔧 Avançado" weight=77
+    //% group="Avancado" weight=77
     export function girarEsquerdaVelocidade(velocidade: number): void {
         girarEsquerdaInterno(velocidade, 0)
     }
@@ -525,7 +525,7 @@ namespace MeuRobo {
      */
     //% block="girar para direita velocidade $velocidade \%"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
-    //% group="🔧 Avançado" weight=76
+    //% group="Avancado" weight=76
     export function girarDireitaVelocidade(velocidade: number): void {
         girarDireitaInterno(velocidade, 0)
     }
@@ -538,7 +538,7 @@ namespace MeuRobo {
     //% block="mover para frente velocidade $velocidade \% por $tempo ms"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% tempo.min=0 tempo.defl=500
-    //% group="🔧 Avançado" weight=75
+    //% group="Avancado" weight=75
     export function moverFrenteTempo(velocidade: number, tempo: number): void {
         moverFrenteInterno(velocidade, tempo)
     }
@@ -548,19 +548,19 @@ namespace MeuRobo {
      * @param velocidade velocidade de 0 a 100
      * @param tempo tempo em milissegundos
      */
-    //% block="mover para trás velocidade $velocidade \% por $tempo ms"
+    //% block="mover para tras velocidade $velocidade \% por $tempo ms"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% tempo.min=0 tempo.defl=500
-    //% group="🔧 Avançado" weight=74
+    //% group="Avancado" weight=74
     export function moverTrasTempo(velocidade: number, tempo: number): void {
         moverTrasInterno(velocidade, tempo)
     }
 
     /**
-     * Distância medida pelo sensor ultrassônico em centímetros
+     * Distancia medida pelo sensor ultrassonico em centimetros
      */
-    //% block="distância em cm"
-    //% group="🔧 Avançado" weight=73
+    //% block="distancia em cm"
+    //% group="Avancado" weight=73
     export function distanciaCm(): number {
         ensureInit()
 
@@ -586,7 +586,7 @@ namespace MeuRobo {
      * Leitura bruta dos sensores de linha (0 a 7)
      */
     //% block="leitura sensores de linha"
-    //% group="🔧 Avançado" weight=72
+    //% group="Avancado" weight=72
     export function leituraSensoresLinha(): number {
         let leitura = (pins.digitalReadPin(DigitalPin.P14) << 2) +
             (pins.digitalReadPin(DigitalPin.P15) << 1) +
@@ -600,7 +600,7 @@ namespace MeuRobo {
      */
     //% block="definir brilho dos LEDs $brilho"
     //% brilho.min=0 brilho.max=255 brilho.defl=255
-    //% group="🔧 Avançado" weight=71
+    //% group="Avancado" weight=71
     export function definirBrilho(brilho: number): void {
         ensureInit()
         brilhoLED = Math.map(brilho, 0, 255, 0, 4095)
@@ -614,7 +614,7 @@ namespace MeuRobo {
     //% block="motor esquerdo $ladoEsquerdo \% direito $ladoDireito \%"
     //% ladoEsquerdo.min=-100 ladoEsquerdo.max=100 ladoEsquerdo.defl=50
     //% ladoDireito.min=-100 ladoDireito.max=100 ladoDireito.defl=50
-    //% group="🔧 Avançado" weight=70
+    //% group="Avancado" weight=70
     export function controlarMotores(ladoEsquerdo: number, ladoDireito: number): void {
         ensureInit()
 
