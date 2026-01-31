@@ -490,7 +490,7 @@ namespace MeuRobo {
      * Move o robô para frente com velocidade em porcentagem (0 a 100)
      * @param velocidade velocidade de 0 a 100
      */
-    //% block="mover para frente velocidade $velocidade \%"
+    //% block="mover para frente velocidade $velocidade"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% group="Avancado" weight=79
     export function moverFrenteVelocidade(velocidade: number): void {
@@ -501,7 +501,7 @@ namespace MeuRobo {
      * Move o robô para trás com velocidade em porcentagem (0 a 100)
      * @param velocidade velocidade de 0 a 100
      */
-    //% block="mover para tras velocidade $velocidade \%"
+    //% block="mover para tras velocidade $velocidade"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% group="Avancado" weight=78
     export function moverTrasVelocidade(velocidade: number): void {
@@ -512,7 +512,7 @@ namespace MeuRobo {
      * Gira o robô para esquerda continuamente
      * @param velocidade velocidade de 0 a 100
      */
-    //% block="girar para esquerda velocidade $velocidade \%"
+    //% block="girar para esquerda velocidade $velocidade"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% group="Avancado" weight=77
     export function girarEsquerdaVelocidade(velocidade: number): void {
@@ -523,7 +523,7 @@ namespace MeuRobo {
      * Gira o robô para direita continuamente
      * @param velocidade velocidade de 0 a 100
      */
-    //% block="girar para direita velocidade $velocidade \%"
+    //% block="girar para direita velocidade $velocidade"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% group="Avancado" weight=76
     export function girarDireitaVelocidade(velocidade: number): void {
@@ -535,7 +535,7 @@ namespace MeuRobo {
      * @param velocidade velocidade de 0 a 100
      * @param tempo tempo em milissegundos
      */
-    //% block="mover para frente velocidade $velocidade \% por $tempo ms"
+    //% block="mover para frente velocidade $velocidade por $tempo ms"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% tempo.min=0 tempo.defl=500
     //% group="Avancado" weight=75
@@ -548,7 +548,7 @@ namespace MeuRobo {
      * @param velocidade velocidade de 0 a 100
      * @param tempo tempo em milissegundos
      */
-    //% block="mover para tras velocidade $velocidade \% por $tempo ms"
+    //% block="mover para tras velocidade $velocidade por $tempo ms"
     //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
     //% tempo.min=0 tempo.defl=500
     //% group="Avancado" weight=74
@@ -611,7 +611,7 @@ namespace MeuRobo {
      * @param ladoEsquerdo velocidade do motor esquerdo (-100 a 100)
      * @param ladoDireito velocidade do motor direito (-100 a 100)
      */
-    //% block="motor esquerdo $ladoEsquerdo \% direito $ladoDireito \%"
+    //% block="motor esquerdo $ladoEsquerdo direito $ladoDireito"
     //% ladoEsquerdo.min=-100 ladoEsquerdo.max=100 ladoEsquerdo.defl=50
     //% ladoDireito.min=-100 ladoDireito.max=100 ladoDireito.defl=50
     //% group="Avancado" weight=70
