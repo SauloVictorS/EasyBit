@@ -36,10 +36,12 @@ enum Passos {
 enum Volta {
     //% block="um pouquinho"
     Pouquinho = 250,
-    //% block="metade"
-    Metade = 570,
-    //% block="completa"
-    Completa = 1135
+    //% block="pouco"
+    Poco = 570,
+    //% block="bastante"
+    Bastante = 1135,
+    //% block="muito"
+    Muito = 2270
 }
 
 enum Lado {
@@ -58,8 +60,19 @@ enum Distancia {
     Longe = 50
 }
 
+enum Velocidade {
+    //% block="devagar"
+    Devagar = 30,
+    //% block="normal"
+    Normal = 50,
+    //% block="rápido"
+    Rapido = 70,
+    //% block="muito rápido"
+    MuitoRapido = 100
+}
+
 //% color="#FF6B35" icon="\uf1b9" weight=100
-//% groups="['💡 Luzes', '🚗 Movimento', '👀 Sentidos', '😊 Emoções']"
+//% groups="['💡 Luzes', '🚗 Movimento', '👀 Sentidos', '😊 Emoções', '🔧 Avançado']"
 namespace MeuRobo {
 
     /*******************************
@@ -141,26 +154,14 @@ namespace MeuRobo {
         setPwm(3, 0, 0)
     }
 
-    function moverFrente(tempoMs: number): void {
+    function moverFrenteInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
-        setPwm(0, 0, VELOCIDADE_MOTOR)
-        setPwm(1, 0, 0)
-        setPwm(2, 0, 4095)
-        setPwm(5, 0, VELOCIDADE_MOTOR)
-        setPwm(4, 0, 0)
-        setPwm(3, 0, 4095)
-        if (tempoMs > 0) {
-            basic.pause(tempoMs)
-            pararMotores()
-        }
-    }
-
-    function moverTras(tempoMs: number): void {
-        ensureInit()
-        setPwm(0, 0, VELOCIDADE_MOTOR)
+        let speed = Math.map(velocidade, 0, 100, 0, 4095)
+        // CORRIGIDO: Invertido para andar para frente corretamente
+        setPwm(0, 0, speed)
         setPwm(1, 0, 4095)
         setPwm(2, 0, 0)
-        setPwm(5, 0, VELOCIDADE_MOTOR)
+        setPwm(5, 0, speed)
         setPwm(4, 0, 4095)
         setPwm(3, 0, 0)
         if (tempoMs > 0) {
@@ -169,12 +170,14 @@ namespace MeuRobo {
         }
     }
 
-    function girarEsquerda(tempoMs: number): void {
+    function moverTrasInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
-        setPwm(0, 0, VELOCIDADE_MOTOR)
-        setPwm(1, 0, 4095)
-        setPwm(2, 0, 0)
-        setPwm(5, 0, VELOCIDADE_MOTOR)
+        let speed = Math.map(velocidade, 0, 100, 0, 4095)
+        // CORRIGIDO: Invertido para andar para trás corretamente
+        setPwm(0, 0, speed)
+        setPwm(1, 0, 0)
+        setPwm(2, 0, 4095)
+        setPwm(5, 0, speed)
         setPwm(4, 0, 0)
         setPwm(3, 0, 4095)
         if (tempoMs > 0) {
@@ -183,14 +186,32 @@ namespace MeuRobo {
         }
     }
 
-    function girarDireita(tempoMs: number): void {
+    function girarEsquerdaInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
-        setPwm(0, 0, VELOCIDADE_MOTOR)
+        let speed = Math.map(velocidade, 0, 100, 0, 4095)
+        // CORRIGIDO: Gira para esquerda
+        setPwm(0, 0, speed)
         setPwm(1, 0, 0)
         setPwm(2, 0, 4095)
-        setPwm(5, 0, VELOCIDADE_MOTOR)
+        setPwm(5, 0, speed)
         setPwm(4, 0, 4095)
         setPwm(3, 0, 0)
+        if (tempoMs > 0) {
+            basic.pause(tempoMs)
+            pararMotores()
+        }
+    }
+
+    function girarDireitaInterno(velocidade: number, tempoMs: number): void {
+        ensureInit()
+        let speed = Math.map(velocidade, 0, 100, 0, 4095)
+        // CORRIGIDO: Gira para direita
+        setPwm(0, 0, speed)
+        setPwm(1, 0, 4095)
+        setPwm(2, 0, 0)
+        setPwm(5, 0, speed)
+        setPwm(4, 0, 0)
+        setPwm(3, 0, 4095)
         if (tempoMs > 0) {
             basic.pause(tempoMs)
             pararMotores()
@@ -273,27 +294,47 @@ namespace MeuRobo {
      *******************************/
 
     /**
-     * Faz o robô andar para frente
+     * Faz o robô ir para frente (movimento contínuo)
+     * @param velocidade quão rápido o robô vai
+     */
+    //% block="ir para frente $velocidade"
+    //% group="🚗 Movimento" weight=99
+    export function irParaFrente(velocidade: Velocidade): void {
+        moverFrenteInterno(velocidade, 0)
+    }
+
+    /**
+     * Faz o robô ir para trás (movimento contínuo)
+     * @param velocidade quão rápido o robô vai
+     */
+    //% block="ir para trás $velocidade"
+    //% group="🚗 Movimento" weight=98
+    export function irParaTras(velocidade: Velocidade): void {
+        moverTrasInterno(velocidade, 0)
+    }
+
+    /**
+     * Faz o robô andar para frente por alguns passos e depois para
      * @param passos quantos passos andar
      */
     //% block="andar para frente $passos passos"
     //% group="🚗 Movimento" weight=97
     export function andarFrente(passos: Passos): void {
-        moverFrente(passos)
+        moverFrenteInterno(70, passos)
     }
 
     /**
-     * Faz o robô andar para trás
+     * Faz o robô andar para trás por alguns passos e depois para
      * @param passos quantos passos andar
      */
     //% block="andar para trás $passos passos"
     //% group="🚗 Movimento" weight=96
     export function andarTras(passos: Passos): void {
-        moverTras(passos)
+        moverTrasInterno(70, passos)
     }
 
     /**
-     * Faz o robô virar
+     * Faz o robô virar e depois para
      * @param lado para qual lado virar
      * @param quanto quanto virar
      */
@@ -301,9 +342,9 @@ namespace MeuRobo {
     //% group="🚗 Movimento" weight=95
     export function virar(lado: Lado, quanto: Volta): void {
         if (lado == Lado.Esquerda) {
-            girarEsquerda(quanto)
+            girarEsquerdaInterno(50, quanto)
         } else {
-            girarDireita(quanto)
+            girarDireitaInterno(50, quanto)
         }
     }
 
@@ -382,16 +423,16 @@ namespace MeuRobo {
     export function dancar(): void {
         // Sequência divertida de movimentos e luzes
         definirCorLEDs(Cor.Amarelo)
-        girarDireita(250)
+        girarDireitaInterno(60, 250)
         definirCorLEDs(Cor.Azul)
-        girarEsquerda(250)
+        girarEsquerdaInterno(60, 250)
         definirCorLEDs(Cor.Verde)
-        girarDireita(250)
+        girarDireitaInterno(60, 250)
         definirCorLEDs(Cor.Roxo)
-        girarEsquerda(250)
+        girarEsquerdaInterno(60, 250)
         definirCorLEDs(Cor.Vermelho)
-        moverFrente(200)
-        moverTras(200)
+        moverFrenteInterno(50, 200)
+        moverTrasInterno(50, 200)
         definirCorLEDs(Cor.Branco)
         basic.pause(300)
         definirCorLEDs(Cor.Apagado)
@@ -429,7 +470,7 @@ namespace MeuRobo {
     export function ficarComMedo(): void {
         // Recua e pisca vermelho
         definirCorLEDs(Cor.Vermelho)
-        moverTras(400)
+        moverTrasInterno(70, 400)
         definirCorLEDs(Cor.Apagado)
         basic.pause(100)
         definirCorLEDs(Cor.Vermelho)
@@ -439,6 +480,181 @@ namespace MeuRobo {
         definirCorLEDs(Cor.Vermelho)
         basic.pause(100)
         definirCorLEDs(Cor.Apagado)
+    }
+
+    /*******************************
+     * 🔧 AVANÇADO
+     *******************************/
+
+    /**
+     * Move o robô para frente com velocidade em porcentagem (0 a 100)
+     * @param velocidade velocidade de 0 a 100
+     */
+    //% block="mover para frente velocidade $velocidade \%"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% group="🔧 Avançado" weight=79
+    export function moverFrenteVelocidade(velocidade: number): void {
+        moverFrenteInterno(velocidade, 0)
+    }
+
+    /**
+     * Move o robô para trás com velocidade em porcentagem (0 a 100)
+     * @param velocidade velocidade de 0 a 100
+     */
+    //% block="mover para trás velocidade $velocidade \%"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% group="🔧 Avançado" weight=78
+    export function moverTrasVelocidade(velocidade: number): void {
+        moverTrasInterno(velocidade, 0)
+    }
+
+    /**
+     * Gira o robô para esquerda continuamente
+     * @param velocidade velocidade de 0 a 100
+     */
+    //% block="girar para esquerda velocidade $velocidade \%"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% group="🔧 Avançado" weight=77
+    export function girarEsquerdaVelocidade(velocidade: number): void {
+        girarEsquerdaInterno(velocidade, 0)
+    }
+
+    /**
+     * Gira o robô para direita continuamente
+     * @param velocidade velocidade de 0 a 100
+     */
+    //% block="girar para direita velocidade $velocidade \%"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% group="🔧 Avançado" weight=76
+    export function girarDireitaVelocidade(velocidade: number): void {
+        girarDireitaInterno(velocidade, 0)
+    }
+
+    /**
+     * Move o robô para frente por um tempo específico em milissegundos
+     * @param velocidade velocidade de 0 a 100
+     * @param tempo tempo em milissegundos
+     */
+    //% block="mover para frente velocidade $velocidade \% por $tempo ms"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% tempo.min=0 tempo.defl=500
+    //% group="🔧 Avançado" weight=75
+    export function moverFrenteTempo(velocidade: number, tempo: number): void {
+        moverFrenteInterno(velocidade, tempo)
+    }
+
+    /**
+     * Move o robô para trás por um tempo específico em milissegundos
+     * @param velocidade velocidade de 0 a 100
+     * @param tempo tempo em milissegundos
+     */
+    //% block="mover para trás velocidade $velocidade \% por $tempo ms"
+    //% velocidade.min=0 velocidade.max=100 velocidade.defl=50
+    //% tempo.min=0 tempo.defl=500
+    //% group="🔧 Avançado" weight=74
+    export function moverTrasTempo(velocidade: number, tempo: number): void {
+        moverTrasInterno(velocidade, tempo)
+    }
+
+    /**
+     * Distância medida pelo sensor ultrassônico em centímetros
+     */
+    //% block="distância em cm"
+    //% group="🔧 Avançado" weight=73
+    export function distanciaCm(): number {
+        ensureInit()
+
+        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
+        pins.digitalWritePin(DigitalPin.P1, 0)
+        control.waitMicros(2)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+        control.waitMicros(10)
+        pins.digitalWritePin(DigitalPin.P1, 0)
+
+        let t = pins.pulseIn(DigitalPin.P2, PulseValue.High, 35000)
+        let ret = t
+
+        if (ret == 0 && ultimoTempoUltra != 0) {
+            ret = ultimoTempoUltra
+        }
+        ultimoTempoUltra = t
+
+        return Math.round(ret / 58)
+    }
+
+    /**
+     * Leitura bruta dos sensores de linha (0 a 7)
+     */
+    //% block="leitura sensores de linha"
+    //% group="🔧 Avançado" weight=72
+    export function leituraSensoresLinha(): number {
+        let leitura = (pins.digitalReadPin(DigitalPin.P14) << 2) +
+            (pins.digitalReadPin(DigitalPin.P15) << 1) +
+            (pins.digitalReadPin(DigitalPin.P16))
+        return leitura
+    }
+
+    /**
+     * Define o brilho dos LEDs (0 a 255)
+     * @param brilho brilho de 0 a 255
+     */
+    //% block="definir brilho dos LEDs $brilho"
+    //% brilho.min=0 brilho.max=255 brilho.defl=255
+    //% group="🔧 Avançado" weight=71
+    export function definirBrilho(brilho: number): void {
+        ensureInit()
+        brilhoLED = Math.map(brilho, 0, 255, 0, 4095)
+    }
+
+    /**
+     * Controla cada motor separadamente
+     * @param ladoEsquerdo velocidade do motor esquerdo (-100 a 100)
+     * @param ladoDireito velocidade do motor direito (-100 a 100)
+     */
+    //% block="motor esquerdo $ladoEsquerdo \% direito $ladoDireito \%"
+    //% ladoEsquerdo.min=-100 ladoEsquerdo.max=100 ladoEsquerdo.defl=50
+    //% ladoDireito.min=-100 ladoDireito.max=100 ladoDireito.defl=50
+    //% group="🔧 Avançado" weight=70
+    export function controlarMotores(ladoEsquerdo: number, ladoDireito: number): void {
+        ensureInit()
+
+        // Motor esquerdo (canais 0, 1, 2)
+        let speedE = Math.map(Math.abs(ladoEsquerdo), 0, 100, 0, 4095)
+        if (ladoEsquerdo > 0) {
+            // Para frente
+            setPwm(0, 0, speedE)
+            setPwm(1, 0, 4095)
+            setPwm(2, 0, 0)
+        } else if (ladoEsquerdo < 0) {
+            // Para trás
+            setPwm(0, 0, speedE)
+            setPwm(1, 0, 0)
+            setPwm(2, 0, 4095)
+        } else {
+            // Parado
+            setPwm(0, 0, 4095)
+            setPwm(1, 0, 0)
+            setPwm(2, 0, 0)
+        }
+
+        // Motor direito (canais 3, 4, 5)
+        let speedD = Math.map(Math.abs(ladoDireito), 0, 100, 0, 4095)
+        if (ladoDireito > 0) {
+            // Para frente
+            setPwm(5, 0, speedD)
+            setPwm(4, 0, 4095)
+            setPwm(3, 0, 0)
+        } else if (ladoDireito < 0) {
+            // Para trás
+            setPwm(5, 0, speedD)
+            setPwm(4, 0, 0)
+            setPwm(3, 0, 4095)
+        } else {
+            // Parado
+            setPwm(5, 0, 4095)
+            setPwm(4, 0, 0)
+            setPwm(3, 0, 0)
+        }
     }
 }
 
