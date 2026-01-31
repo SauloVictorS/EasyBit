@@ -157,13 +157,14 @@ namespace MeuRobo {
     function moverFrenteInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
         let speed = Math.map(velocidade, 0, 100, 0, 4095)
-        // CORRIGIDO: Invertido para andar para frente corretamente
+        // Motor esquerdo - para frente
         setPwm(0, 0, speed)
-        setPwm(1, 0, 4095)
-        setPwm(2, 0, 0)
+        setPwm(1, 0, 0)
+        setPwm(2, 0, 4095)
+        // Motor direito - para frente
         setPwm(5, 0, speed)
-        setPwm(4, 0, 4095)
-        setPwm(3, 0, 0)
+        setPwm(4, 0, 0)
+        setPwm(3, 0, 4095)
         if (tempoMs > 0) {
             basic.pause(tempoMs)
             pararMotores()
@@ -173,26 +174,11 @@ namespace MeuRobo {
     function moverTrasInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
         let speed = Math.map(velocidade, 0, 100, 0, 4095)
-        // CORRIGIDO: Invertido para andar para trás corretamente
+        // Motor esquerdo - para tras
         setPwm(0, 0, speed)
-        setPwm(1, 0, 0)
-        setPwm(2, 0, 4095)
-        setPwm(5, 0, speed)
-        setPwm(4, 0, 0)
-        setPwm(3, 0, 4095)
-        if (tempoMs > 0) {
-            basic.pause(tempoMs)
-            pararMotores()
-        }
-    }
-
-    function girarEsquerdaInterno(velocidade: number, tempoMs: number): void {
-        ensureInit()
-        let speed = Math.map(velocidade, 0, 100, 0, 4095)
-        // CORRIGIDO: Gira para esquerda
-        setPwm(0, 0, speed)
-        setPwm(1, 0, 0)
-        setPwm(2, 0, 4095)
+        setPwm(1, 0, 4095)
+        setPwm(2, 0, 0)
+        // Motor direito - para tras
         setPwm(5, 0, speed)
         setPwm(4, 0, 4095)
         setPwm(3, 0, 0)
@@ -202,16 +188,34 @@ namespace MeuRobo {
         }
     }
 
-    function girarDireitaInterno(velocidade: number, tempoMs: number): void {
+    function girarEsquerdaInterno(velocidade: number, tempoMs: number): void {
         ensureInit()
         let speed = Math.map(velocidade, 0, 100, 0, 4095)
-        // CORRIGIDO: Gira para direita
+        // Motor esquerdo - para tras
         setPwm(0, 0, speed)
         setPwm(1, 0, 4095)
         setPwm(2, 0, 0)
+        // Motor direito - para frente
         setPwm(5, 0, speed)
         setPwm(4, 0, 0)
         setPwm(3, 0, 4095)
+        if (tempoMs > 0) {
+            basic.pause(tempoMs)
+            pararMotores()
+        }
+    }
+
+    function girarDireitaInterno(velocidade: number, tempoMs: number): void {
+        ensureInit()
+        let speed = Math.map(velocidade, 0, 100, 0, 4095)
+        // Motor esquerdo - para frente
+        setPwm(0, 0, speed)
+        setPwm(1, 0, 0)
+        setPwm(2, 0, 4095)
+        // Motor direito - para tras
+        setPwm(5, 0, speed)
+        setPwm(4, 0, 4095)
+        setPwm(3, 0, 0)
         if (tempoMs > 0) {
             basic.pause(tempoMs)
             pararMotores()
@@ -403,12 +407,12 @@ namespace MeuRobo {
     }
 
     /**
-     * Verifica se o botão está apertado
+     * Verifica se o botao esta apertado
      */
     //% block="botao apertado"
     //% group="Sentidos" weight=88
     export function botaoApertado(): boolean {
-        return pins.digitalReadPin(DigitalPin.P5) == 1
+        return pins.digitalReadPin(DigitalPin.P5) == 0
     }
 
     /*******************************
@@ -623,13 +627,13 @@ namespace MeuRobo {
         if (ladoEsquerdo > 0) {
             // Para frente
             setPwm(0, 0, speedE)
-            setPwm(1, 0, 4095)
-            setPwm(2, 0, 0)
-        } else if (ladoEsquerdo < 0) {
-            // Para trás
-            setPwm(0, 0, speedE)
             setPwm(1, 0, 0)
             setPwm(2, 0, 4095)
+        } else if (ladoEsquerdo < 0) {
+            // Para tras
+            setPwm(0, 0, speedE)
+            setPwm(1, 0, 4095)
+            setPwm(2, 0, 0)
         } else {
             // Parado
             setPwm(0, 0, 4095)
@@ -642,13 +646,13 @@ namespace MeuRobo {
         if (ladoDireito > 0) {
             // Para frente
             setPwm(5, 0, speedD)
-            setPwm(4, 0, 4095)
-            setPwm(3, 0, 0)
-        } else if (ladoDireito < 0) {
-            // Para trás
-            setPwm(5, 0, speedD)
             setPwm(4, 0, 0)
             setPwm(3, 0, 4095)
+        } else if (ladoDireito < 0) {
+            // Para tras
+            setPwm(5, 0, speedD)
+            setPwm(4, 0, 4095)
+            setPwm(3, 0, 0)
         } else {
             // Parado
             setPwm(5, 0, 4095)
